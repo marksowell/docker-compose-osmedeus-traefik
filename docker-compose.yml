@@ -1,0 +1,19 @@
+version: "2"
+services:
+  osmedeus:
+    image: j3ssie/osmedeus:latest
+    command: server --disable-ssl
+    volumes:
+      - /root/osmedeus:/root/.osmedeus/workspaces
+    container_name: osmedeus
+    restart: unless-stopped
+    labels:
+      # Explicitly tell Traefik to expose this container
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:osmedeus.example.com"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
